@@ -1,0 +1,37 @@
+[
+  {
+    "customer_id": "CUST-001",
+    "name": "Alex Tan",
+    "email": "alex.tan@example.com"
+  },
+  {
+    "customer_id": "CUST-002",
+    "name": "Sarah Lim",
+    "email": "sarah.lim@example.com"
+  },
+  {
+    "customer_id": "CUST-003",
+    "name": "Daniel Wong",
+    "email": "daniel.wong@example.com"
+  },
+  {
+    "customer_id": "CUST-004",
+    "name": "Aisha Rahman",
+    "email": "aisha.rahman@example.com"
+  },
+  {
+    "customer_id": "CUST-005",
+    "name": "Ryan Koh",
+    "email": "ryan.koh@example.com"
+  },
+  {
+    "customer_id": "CUST-006",
+    "name": "Mei Chen",
+    "email": "mei.chen@example.com"
+  },
+  {
+    "customer_id": "CUST-007",
+    "name": "Adam Lee",
+    "email": "adam.lee@example.com"
+  }
+]

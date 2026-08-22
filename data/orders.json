@@ -1,0 +1,137 @@
+[
+  {
+    "order_id": "ORD-1001",
+    "customer_id": "CUST-001",
+    "status": "processing",
+    "delivered_at": null,
+    "items": [
+      {
+        "sku": "RUN-001",
+        "name": "Cloud Runner",
+        "price": 129.0
+      }
+    ]
+  },
+  {
+    "order_id": "ORD-1002",
+    "customer_id": "CUST-001",
+    "status": "shipped",
+    "delivered_at": null,
+    "items": [
+      {
+        "sku": "TRK-001",
+        "name": "Trail Runner",
+        "price": 149.0
+      }
+    ]
+  },
+  {
+    "order_id": "ORD-1003",
+    "customer_id": "CUST-002",
+    "status": "delivered",
+    "delivered_at": "2026-08-18T10:30:00",
+    "items": [
+      {
+        "sku": "LIF-001",
+        "name": "Everyday Life",
+        "price": 99.0
+      }
+    ]
+  },
+  {
+    "order_id": "ORD-1004",
+    "customer_id": "CUST-002",
+    "status": "delivered",
+    "delivered_at": "2026-08-15T14:00:00",
+    "items": [
+      {
+        "sku": "RUN-002",
+        "name": "Cloud Runner Pro",
+        "price": 159.0
+      }
+    ]
+  },
+  {
+    "order_id": "ORD-1005",
+    "customer_id": "CUST-003",
+    "status": "delivered",
+    "delivered_at": "2026-07-10T09:15:00",
+    "items": [
+      {
+        "sku": "TRK-002",
+        "name": "Mountain Trail",
+        "price": 179.0
+      }
+    ]
+  },
+  {
+    "order_id": "ORD-1006",
+    "customer_id": "CUST-003",
+    "status": "delivered",
+    "delivered_at": "2026-08-12T16:45:00",
+    "items": [
+      {
+        "sku": "SALE-001",
+        "name": "Limited Edition Runner",
+        "price": 89.0
+      }
+    ]
+  },
+  {
+    "order_id": "ORD-1007",
+    "customer_id": "CUST-004",
+    "status": "processing",
+    "delivered_at": null,
+    "items": [
+      {
+        "sku": "RUN-003",
+        "name": "City Runner",
+        "price": 119.0
+      },
+      {
+        "sku": "ACC-001",
+        "name": "Performance Socks",
+        "price": 19.0
+      }
+    ]
+  },
+  {
+    "order_id": "ORD-1008",
+    "customer_id": "CUST-005",
+    "status": "cancelled",
+    "delivered_at": null,
+    "items": [
+      {
+        "sku": "LIF-002",
+        "name": "Daily Comfort",
+        "price": 109.0
+      }
+    ]
+  },
+  {
+    "order_id": "ORD-1009",
+    "customer_id": "CUST-006",
+    "status": "shipped",
+    "delivered_at": null,
+    "items": [
+      {
+        "sku": "RUN-004",
+        "name": "Speed Runner",
+        "price": 139.0
+      }
+    ]
+  },
+  {
+    "order_id": "ORD-1010",
+    "customer_id": "CUST-007",
+    "status": "delivered",
+    "delivered_at": "2026-08-20T11:20:00",
+    "items": [
+      {
+        "sku": "RUN-005",
+        "name": "Cloud Runner",
+        "price": 129.0
+      }
+    ]
+  }
+]
