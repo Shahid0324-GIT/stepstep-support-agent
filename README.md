@@ -30,38 +30,38 @@ The prototype does **not** perform destructive order mutations such as actually 
 ## Architecture
 
 ```text
-                         ┌──────────────────┐
-                         │     FastAPI      │
-                         │   /api/v1/chat   │
-                         └────────┬─────────┘
-                                  │
-                           AgentContext
-                           request_id
-                           customer_id
-                                  │
-                         ┌────────▼─────────┐
-                         │  SupportAgent    │
-                         │                  │
-                         │  Groq LLM        │
-                         │  Tool loop       │
-                         │  Guardrails      │
-                         └────────┬─────────┘
-                                  │
-              ┌───────────────────┼────────────────────┐
-              │                   │                    │
-              ▼                   ▼                    ▼
-       Knowledge Tool       Order Tool          Policy Tool
-              │                   │                    │
-              ▼                   ▼                    ▼
-       Embedding Search       Repository       Domain Rules
-              │                   │                    │
-              ▼                   ▼                    │
-       Similarity Threshold  Customer Scope            │
-                                  │                    │
-                                  └──────────┬─────────┘
-                                             │
-                                             ▼
-                                    Escalation Tool
+                          ┌──────────────────┐
+                          │     FastAPI      │
+                          │   /api/v1/chat   │
+                          └────────┬─────────┘
+                                   │
+                              AgentContext
+                              request_id
+                              customer_id
+                                   │
+                          ┌────────▼─────────┐
+                          │  SupportAgent    │
+                          │                  │
+                          │  Groq LLM       │
+                          │  Tool loop       │
+                          │  Guardrails      │
+                          └────────┬─────────┘
+                                   │
+                 ┌─────────────────┼────────────────────┐
+                 │                 │                    │
+                 ▼                 ▼                    ▼
+          Knowledge Tool      Order Tool          Policy Tool
+                 │                 │                    │
+                 ▼                 ▼                    ▼
+          Embedding Search     Repository         Domain Rules
+                 │                 │                    │
+                 ▼                 ▼                    │
+          Similarity Threshold  Customer Scope          │
+                                   │                    │
+                                   └──────────┬─────────┘
+                                              │
+                                              ▼
+                                       Escalation Tool
 ```
 
 ### Responsibility boundaries
@@ -163,9 +163,12 @@ For example, cancellation eligibility is determined by application logic:
 
 ```text
 processing → eligible
-shipped    → not eligible
-delivered  → not eligible
-cancelled  → not eligible
+
+shipped   → not eligible
+
+delivered → not eligible
+
+cancelled → not eligible
 ```
 
 The LLM can request cancellation evaluation, but it cannot override the deterministic result.
@@ -217,6 +220,28 @@ final response
 This behavior was added after an earlier failure where the model repeatedly searched the knowledge base and eventually inferred an unsupported exchange workflow from the returns policy.
 
 The defect and corrective actions are documented in `DECISION_LOG.md`.
+
+---
+
+## Out-of-domain handling
+
+The agent is intentionally scoped to StepStep customer-support requests.
+
+Requests outside that domain should not be answered using general model knowledge, and they should not be routed into StepStep business workflows simply because the request mentions StepStep.
+
+During evaluation, an unrelated request such as:
+
+> Can you recommend a laptop for software development?
+
+was initially treated as a support-related knowledge request.
+
+A similar failure occurred when an unrelated request mentioned StepStep, showing that entity mentions alone were insufficient to establish domain relevance.
+
+The system prompt was strengthened to explicitly define the supported domain and prohibit business-tool use for unrelated requests.
+
+The out-of-domain evaluation suite now covers unrelated requests across several categories and verifies that the agent does not invoke StepStep business tools for those requests.
+
+This is intentionally handled through the existing agent boundary rather than adding a separate classifier or another LLM call. The domain is small enough that introducing another routing component would add complexity without sufficient evidence that it was necessary.
 
 ---
 
@@ -359,29 +384,29 @@ stepstep-support-agent/
 │   │   ├── context.py
 │   │   ├── prompts.py
 │   │   └── tools.py
-│   │
+│
 │   ├── api/
 │   │   ├── routes.py
 │   │   └── schemas.py
-│   │
+│
 │   ├── domain/
 │   │   └── orders.py
-│   │
+│
 │   ├── repositories/
 │   │   └── orders.py
-│   │
+│
 │   ├── retrieval/
 │   │   └── knowledge.py
-│   │
+│
 │   ├── tools/
 │   │   ├── knowledge.py
 │   │   ├── orders.py
 │   │   └── policies.py
-│   │
+│
 │   ├── observability/
 │   │   ├── events.py
 │   │   └── logger.py
-│   │
+│
 │   └── main.py
 │
 ├── assessment/
@@ -531,6 +556,8 @@ Real LLM scenarios are used to evaluate:
 - Escalation
 - Action-claim boundaries
 - Multi-step tool use
+- Out-of-domain handling
+- Prompt-injection resistance
 
 This distinction is intentional.
 
@@ -553,6 +580,7 @@ The prototype was deliberately tested against failure cases rather than only suc
 | Unsupported knowledge question             | Do not infer an answer             |
 | Low-confidence retrieval                   | Do not return weak evidence        |
 | Unsupported exchange request               | Escalate                           |
+| Out-of-domain request                      | Do not invoke business tools       |
 | Repeated knowledge searches                | Prevent runaway repetition         |
 | Maximum tool iterations reached            | Stop safely                        |
 | Cancellation eligibility                   | Do not claim cancellation occurred |
@@ -577,7 +605,7 @@ This prevents the model from turning a plausible conversational response into an
 
 The most likely early failure is incorrect model behavior around tool selection or knowledge interpretation.
 
-For example, the model may select the wrong tool, repeatedly call a tool, or attempt to infer a workflow from related but insufficient knowledge.
+For example, the model may select the wrong tool, repeatedly call a tool, attempt to infer a workflow from related but insufficient knowledge, or misclassify an out-of-domain request.
 
 The prototype contains this with:
 
@@ -588,6 +616,7 @@ The prototype contains this with:
 - Maximum tool iterations
 - Deterministic business rules
 - Escalation
+- Explicit domain boundaries
 - Structured observability
 
 Production monitoring should additionally track tool-selection errors, escalation rates, retrieval false positives/negatives, latency, model failures, and customer outcomes.
@@ -607,6 +636,8 @@ A managed vector database was rejected because the prototype corpus is small and
 Business rules were kept outside the LLM because deterministic rules are easier to test and reason about.
 
 Customer-scoped order retrieval was introduced after recognizing that an `order_id` alone would create an authorization boundary problem.
+
+A separate domain-classification component was not introduced because the current domain is small and the additional routing layer would add complexity without sufficient evidence that it was necessary.
 
 These decisions and the evidence behind them are recorded in `DECISION_LOG.md`.
 
@@ -632,7 +663,10 @@ The system was subsequently changed to:
 - prevent repeated identical tool calls
 - explicitly prohibit unsupported policy inference
 - provide an escalation tool
+- add application-level knowledge-gap enforcement
 - add regression coverage for the unsupported scenario
+
+A second evaluation exposed an out-of-domain failure where an unrelated request was routed into the support workflow. The domain boundary was strengthened and dedicated out-of-domain regression scenarios were added.
 
 ---
 
@@ -647,6 +681,7 @@ Current confidence comes from:
 - Real LLM end-to-end scenarios
 - Observed escalation behavior
 - Observed containment of repeated tool calls
+- Out-of-domain evaluation scenarios
 - Structured logs showing the agent/tool execution path
 
 The system is still a prototype and broad production reliability is unproven.
@@ -662,7 +697,7 @@ The main limitations are:
 - No production observability platform
 - LLM behavior remains model-dependent
 
-With one additional day, the highest-value improvement would be expanding the evaluation suite with a larger set of labeled normal, ambiguous, unsupported, adversarial, and authorization-boundary scenarios.
+With one additional day, the highest-value improvement would be expanding the evaluation suite with a larger set of labeled normal, ambiguous, unsupported, adversarial, authorization-boundary, knowledge-gap, and out-of-domain scenarios.
 
 I would use those results to measure retrieval precision/recall, escalation quality, tool-selection failures, and unsafe response rates rather than simply adding more infrastructure.
 
@@ -743,6 +778,8 @@ One example was the use of generated `pytest.mark.parametrize` tests. The genera
 
 The most important example was not accepting model behavior during agent evaluation. The model generated an unsupported exchange workflow from a related returns policy. That behavior was identified as unsafe and became the basis for a defect, corrective controls, and regression testing.
 
+A later out-of-domain evaluation also exposed that an unrelated request could enter the support workflow. That behavior was treated as a boundary defect, leading to explicit domain constraints and dedicated regression scenarios.
+
 The project therefore treats AI as an implementation accelerator, not as the authority for architecture, security, business rules, or correctness.
 
 ---
@@ -769,6 +806,7 @@ The current implementation prioritizes:
 - Knowledge grounding
 - Failure handling
 - Human escalation
+- Out-of-domain boundaries
 - Structured observability
 - Testability
 - Clear engineering trade-offs
