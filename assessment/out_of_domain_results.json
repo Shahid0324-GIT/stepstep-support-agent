@@ -1,0 +1,464 @@
+[
+  {
+    "name": "weather_request",
+    "customer_id": "CUST-001",
+    "message": "What is the weather in Singapore today?",
+    "response": "I’m sorry, but I’m only able to help with StepStep orders, returns, cancellations, shipping, refunds, and product information. I don’t have the ability to provide weather updates or other non‑StepStep inquiries. If you need assistance with anything related to StepStep, feel free to let me know!",
+    "tool_calls": [],
+    "events": [
+      {
+        "timestamp": "2026-08-23T08:25:54.897307Z",
+        "level": "info",
+        "event_type": "agent_request",
+        "request_id": "eval-out-of-domain-61fedea4-7f56-4638-af16-b41d30906fee",
+        "customer_id": "CUST-001",
+        "service": "stepstep-support-agent",
+        "function_name": "chat",
+        "success": true,
+        "duration_ms": null,
+        "details": {
+          "message_length": 39
+        },
+        "error": null
+      },
+      {
+        "timestamp": "2026-08-23T08:25:54.897673Z",
+        "level": "info",
+        "event_type": "llm_request",
+        "request_id": "eval-out-of-domain-61fedea4-7f56-4638-af16-b41d30906fee",
+        "customer_id": "CUST-001",
+        "service": "stepstep-support-agent",
+        "function_name": "chat",
+        "success": true,
+        "duration_ms": null,
+        "details": {
+          "model": "openai/gpt-oss-20b",
+          "iteration": 1,
+          "message_count": 2,
+          "tool_count": 4
+        },
+        "error": null
+      },
+      {
+        "timestamp": "2026-08-23T08:25:55.557305Z",
+        "level": "info",
+        "event_type": "llm_response",
+        "request_id": "eval-out-of-domain-61fedea4-7f56-4638-af16-b41d30906fee",
+        "customer_id": "CUST-001",
+        "service": "stepstep-support-agent",
+        "function_name": "chat",
+        "success": true,
+        "duration_ms": 659.6282999998948,
+        "details": {
+          "model": "openai/gpt-oss-20b",
+          "iteration": 1,
+          "has_tool_calls": false,
+          "tool_call_count": 0,
+          "response_length": 295
+        },
+        "error": null
+      },
+      {
+        "timestamp": "2026-08-23T08:25:55.557598Z",
+        "level": "info",
+        "event_type": "agent_response",
+        "request_id": "eval-out-of-domain-61fedea4-7f56-4638-af16-b41d30906fee",
+        "customer_id": "CUST-001",
+        "service": "stepstep-support-agent",
+        "function_name": "chat",
+        "success": true,
+        "duration_ms": null,
+        "details": {
+          "response_length": 295,
+          "iteration": 1
+        },
+        "error": null
+      }
+    ]
+  },
+  {
+    "name": "general_programming_question",
+    "customer_id": "CUST-001",
+    "message": "Can you explain how Python decorators work?",
+    "response": "I’m sorry, but I’m only able to help with StepStep orders, returns, cancellations, shipping, refunds, and product information. I don’t have the capability to address questions about Python decorators. If you need assistance with StepStep, feel free to let me know!",
+    "tool_calls": [],
+    "events": [
+      {
+        "timestamp": "2026-08-23T08:25:55.558133Z",
+        "level": "info",
+        "event_type": "agent_request",
+        "request_id": "eval-out-of-domain-e63b0b8d-ed70-4762-9cd9-9b47e62e9b75",
+        "customer_id": "CUST-001",
+        "service": "stepstep-support-agent",
+        "function_name": "chat",
+        "success": true,
+        "duration_ms": null,
+        "details": {
+          "message_length": 43
+        },
+        "error": null
+      },
+      {
+        "timestamp": "2026-08-23T08:25:55.558260Z",
+        "level": "info",
+        "event_type": "llm_request",
+        "request_id": "eval-out-of-domain-e63b0b8d-ed70-4762-9cd9-9b47e62e9b75",
+        "customer_id": "CUST-001",
+        "service": "stepstep-support-agent",
+        "function_name": "chat",
+        "success": true,
+        "duration_ms": null,
+        "details": {
+          "model": "openai/gpt-oss-20b",
+          "iteration": 1,
+          "message_count": 2,
+          "tool_count": 4
+        },
+        "error": null
+      },
+      {
+        "timestamp": "2026-08-23T08:25:56.062252Z",
+        "level": "info",
+        "event_type": "llm_response",
+        "request_id": "eval-out-of-domain-e63b0b8d-ed70-4762-9cd9-9b47e62e9b75",
+        "customer_id": "CUST-001",
+        "service": "stepstep-support-agent",
+        "function_name": "chat",
+        "success": true,
+        "duration_ms": 503.9841999987402,
+        "details": {
+          "model": "openai/gpt-oss-20b",
+          "iteration": 1,
+          "has_tool_calls": false,
+          "tool_call_count": 0,
+          "response_length": 264
+        },
+        "error": null
+      },
+      {
+        "timestamp": "2026-08-23T08:25:56.062475Z",
+        "level": "info",
+        "event_type": "agent_response",
+        "request_id": "eval-out-of-domain-e63b0b8d-ed70-4762-9cd9-9b47e62e9b75",
+        "customer_id": "CUST-001",
+        "service": "stepstep-support-agent",
+        "function_name": "chat",
+        "success": true,
+        "duration_ms": null,
+        "details": {
+          "response_length": 264,
+          "iteration": 1
+        },
+        "error": null
+      }
+    ]
+  },
+  {
+    "name": "general_travel_question",
+    "customer_id": "CUST-001",
+    "message": "What are the best places to visit in Japan?",
+    "response": "I’m here to help with StepStep orders, returns, cancellations, shipping, refunds, and product information. I’m sorry, but I don’t have the ability to answer travel or destination questions.",
+    "tool_calls": [],
+    "events": [
+      {
+        "timestamp": "2026-08-23T08:25:56.062890Z",
+        "level": "info",
+        "event_type": "agent_request",
+        "request_id": "eval-out-of-domain-38e9649d-35d5-4cbe-a586-a4af18c52fbc",
+        "customer_id": "CUST-001",
+        "service": "stepstep-support-agent",
+        "function_name": "chat",
+        "success": true,
+        "duration_ms": null,
+        "details": {
+          "message_length": 43
+        },
+        "error": null
+      },
+      {
+        "timestamp": "2026-08-23T08:25:56.063001Z",
+        "level": "info",
+        "event_type": "llm_request",
+        "request_id": "eval-out-of-domain-38e9649d-35d5-4cbe-a586-a4af18c52fbc",
+        "customer_id": "CUST-001",
+        "service": "stepstep-support-agent",
+        "function_name": "chat",
+        "success": true,
+        "duration_ms": null,
+        "details": {
+          "model": "openai/gpt-oss-20b",
+          "iteration": 1,
+          "message_count": 2,
+          "tool_count": 4
+        },
+        "error": null
+      },
+      {
+        "timestamp": "2026-08-23T08:25:56.677509Z",
+        "level": "info",
+        "event_type": "llm_response",
+        "request_id": "eval-out-of-domain-38e9649d-35d5-4cbe-a586-a4af18c52fbc",
+        "customer_id": "CUST-001",
+        "service": "stepstep-support-agent",
+        "function_name": "chat",
+        "success": true,
+        "duration_ms": 614.498700000695,
+        "details": {
+          "model": "openai/gpt-oss-20b",
+          "iteration": 1,
+          "has_tool_calls": false,
+          "tool_call_count": 0,
+          "response_length": 189
+        },
+        "error": null
+      },
+      {
+        "timestamp": "2026-08-23T08:25:56.677778Z",
+        "level": "info",
+        "event_type": "agent_response",
+        "request_id": "eval-out-of-domain-38e9649d-35d5-4cbe-a586-a4af18c52fbc",
+        "customer_id": "CUST-001",
+        "service": "stepstep-support-agent",
+        "function_name": "chat",
+        "success": true,
+        "duration_ms": null,
+        "details": {
+          "response_length": 189,
+          "iteration": 1
+        },
+        "error": null
+      }
+    ]
+  },
+  {
+    "name": "general_financial_question",
+    "customer_id": "CUST-001",
+    "message": "Should I invest in Bitcoin right now?",
+    "response": "I’m sorry, but I’m only able to assist with StepStep customer support topics such as orders, returns, cancellations, shipping, refunds, and StepStep product information. I’m not able to provide advice or information about investing in Bitcoin or other financial matters. If you have a StepStep‑related question, feel free to let me know!",
+    "tool_calls": [],
+    "events": [
+      {
+        "timestamp": "2026-08-23T08:25:56.678362Z",
+        "level": "info",
+        "event_type": "agent_request",
+        "request_id": "eval-out-of-domain-90935513-6911-43c4-b02e-8d070520753b",
+        "customer_id": "CUST-001",
+        "service": "stepstep-support-agent",
+        "function_name": "chat",
+        "success": true,
+        "duration_ms": null,
+        "details": {
+          "message_length": 37
+        },
+        "error": null
+      },
+      {
+        "timestamp": "2026-08-23T08:25:56.678497Z",
+        "level": "info",
+        "event_type": "llm_request",
+        "request_id": "eval-out-of-domain-90935513-6911-43c4-b02e-8d070520753b",
+        "customer_id": "CUST-001",
+        "service": "stepstep-support-agent",
+        "function_name": "chat",
+        "success": true,
+        "duration_ms": null,
+        "details": {
+          "model": "openai/gpt-oss-20b",
+          "iteration": 1,
+          "message_count": 2,
+          "tool_count": 4
+        },
+        "error": null
+      },
+      {
+        "timestamp": "2026-08-23T08:25:57.289367Z",
+        "level": "info",
+        "event_type": "llm_response",
+        "request_id": "eval-out-of-domain-90935513-6911-43c4-b02e-8d070520753b",
+        "customer_id": "CUST-001",
+        "service": "stepstep-support-agent",
+        "function_name": "chat",
+        "success": true,
+        "duration_ms": 610.862300000008,
+        "details": {
+          "model": "openai/gpt-oss-20b",
+          "iteration": 1,
+          "has_tool_calls": false,
+          "tool_call_count": 0,
+          "response_length": 337
+        },
+        "error": null
+      },
+      {
+        "timestamp": "2026-08-23T08:25:57.289603Z",
+        "level": "info",
+        "event_type": "agent_response",
+        "request_id": "eval-out-of-domain-90935513-6911-43c4-b02e-8d070520753b",
+        "customer_id": "CUST-001",
+        "service": "stepstep-support-agent",
+        "function_name": "chat",
+        "success": true,
+        "duration_ms": null,
+        "details": {
+          "response_length": 337,
+          "iteration": 1
+        },
+        "error": null
+      }
+    ]
+  },
+  {
+    "name": "unrelated_product_question",
+    "customer_id": "CUST-001",
+    "message": "Can you recommend a laptop for software development?",
+    "response": "I’m sorry, but I’m only able to assist with StepStep customer support matters (orders, returns, cancellations, shipping, refunds, and StepStep products). I don’t have the capability to help with laptop recommendations or general tech advice. If you have any questions about StepStep orders or related topics, feel free to let me know!",
+    "tool_calls": [],
+    "events": [
+      {
+        "timestamp": "2026-08-23T08:25:57.289990Z",
+        "level": "info",
+        "event_type": "agent_request",
+        "request_id": "eval-out-of-domain-f7185c21-26e3-4919-9da2-2ad5c6cfc65b",
+        "customer_id": "CUST-001",
+        "service": "stepstep-support-agent",
+        "function_name": "chat",
+        "success": true,
+        "duration_ms": null,
+        "details": {
+          "message_length": 52
+        },
+        "error": null
+      },
+      {
+        "timestamp": "2026-08-23T08:25:57.290122Z",
+        "level": "info",
+        "event_type": "llm_request",
+        "request_id": "eval-out-of-domain-f7185c21-26e3-4919-9da2-2ad5c6cfc65b",
+        "customer_id": "CUST-001",
+        "service": "stepstep-support-agent",
+        "function_name": "chat",
+        "success": true,
+        "duration_ms": null,
+        "details": {
+          "model": "openai/gpt-oss-20b",
+          "iteration": 1,
+          "message_count": 2,
+          "tool_count": 4
+        },
+        "error": null
+      },
+      {
+        "timestamp": "2026-08-23T08:25:57.856419Z",
+        "level": "info",
+        "event_type": "llm_response",
+        "request_id": "eval-out-of-domain-f7185c21-26e3-4919-9da2-2ad5c6cfc65b",
+        "customer_id": "CUST-001",
+        "service": "stepstep-support-agent",
+        "function_name": "chat",
+        "success": true,
+        "duration_ms": 566.2888000006205,
+        "details": {
+          "model": "openai/gpt-oss-20b",
+          "iteration": 1,
+          "has_tool_calls": false,
+          "tool_call_count": 0,
+          "response_length": 334
+        },
+        "error": null
+      },
+      {
+        "timestamp": "2026-08-23T08:25:57.856641Z",
+        "level": "info",
+        "event_type": "agent_response",
+        "request_id": "eval-out-of-domain-f7185c21-26e3-4919-9da2-2ad5c6cfc65b",
+        "customer_id": "CUST-001",
+        "service": "stepstep-support-agent",
+        "function_name": "chat",
+        "success": true,
+        "duration_ms": null,
+        "details": {
+          "response_length": 334,
+          "iteration": 1
+        },
+        "error": null
+      }
+    ]
+  },
+  {
+    "name": "out_of_domain_with_stepstep_keyword",
+    "customer_id": "CUST-001",
+    "message": "Can you recommend a laptop for my StepStep work?",
+    "response": "I’m only able to help with StepStep orders, returns, cancellations, shipping, refunds, and StepStep product information. I’m not able to assist with laptop recommendations or other general product advice. If you need help with any StepStep‑related topic, feel free to let me know!",
+    "tool_calls": [],
+    "events": [
+      {
+        "timestamp": "2026-08-23T08:25:57.856997Z",
+        "level": "info",
+        "event_type": "agent_request",
+        "request_id": "eval-out-of-domain-e78b25a0-747e-418b-9a04-d74c79580d43",
+        "customer_id": "CUST-001",
+        "service": "stepstep-support-agent",
+        "function_name": "chat",
+        "success": true,
+        "duration_ms": null,
+        "details": {
+          "message_length": 48
+        },
+        "error": null
+      },
+      {
+        "timestamp": "2026-08-23T08:25:57.857098Z",
+        "level": "info",
+        "event_type": "llm_request",
+        "request_id": "eval-out-of-domain-e78b25a0-747e-418b-9a04-d74c79580d43",
+        "customer_id": "CUST-001",
+        "service": "stepstep-support-agent",
+        "function_name": "chat",
+        "success": true,
+        "duration_ms": null,
+        "details": {
+          "model": "openai/gpt-oss-20b",
+          "iteration": 1,
+          "message_count": 2,
+          "tool_count": 4
+        },
+        "error": null
+      },
+      {
+        "timestamp": "2026-08-23T08:25:58.465389Z",
+        "level": "info",
+        "event_type": "llm_response",
+        "request_id": "eval-out-of-domain-e78b25a0-747e-418b-9a04-d74c79580d43",
+        "customer_id": "CUST-001",
+        "service": "stepstep-support-agent",
+        "function_name": "chat",
+        "success": true,
+        "duration_ms": 608.2825000012235,
+        "details": {
+          "model": "openai/gpt-oss-20b",
+          "iteration": 1,
+          "has_tool_calls": false,
+          "tool_call_count": 0,
+          "response_length": 280
+        },
+        "error": null
+      },
+      {
+        "timestamp": "2026-08-23T08:25:58.465611Z",
+        "level": "info",
+        "event_type": "agent_response",
+        "request_id": "eval-out-of-domain-e78b25a0-747e-418b-9a04-d74c79580d43",
+        "customer_id": "CUST-001",
+        "service": "stepstep-support-agent",
+        "function_name": "chat",
+        "success": true,
+        "duration_ms": null,
+        "details": {
+          "response_length": 280,
+          "iteration": 1
+        },
+        "error": null
+      }
+    ]
+  }
+]

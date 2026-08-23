@@ -847,6 +847,184 @@ A production implementation would persist the escalation in a support-ticket sys
 
 A production system should additionally evaluate escalation quality using a larger set of scenarios, including refunds, damaged products, payment disputes, and other cases where human intervention is required.
 
+## D015 — Keep out-of-domain requests outside the support workflow
+
+**Status:** Accepted
+
+### Defect discovered
+
+During evaluation of the StepStep Support Agent, we added an out-of-domain
+evaluation suite covering requests unrelated to StepStep customer support.
+
+The initial scenarios behaved correctly:
+
+- Weather requests were rejected without tool calls.
+- General programming questions were rejected without tool calls.
+- Travel questions were rejected without tool calls.
+- Financial questions were rejected without tool calls.
+
+However, an unrelated product request exposed a boundary issue:
+
+`Can you recommend a laptop for software development?`
+
+The agent incorrectly treated the request as a StepStep knowledge question,
+called `search_knowledge`, failed to find relevant information, and then
+escalated the request.
+
+This was incorrect because the request was not a StepStep customer-support
+request in the first place. Escalation is appropriate for an in-domain
+request that cannot be safely resolved, not for an unrelated request outside
+the agent's capabilities.
+
+A second test confirmed that merely mentioning StepStep could trigger the
+same behavior:
+
+`Can you recommend a laptop for my StepStep work?`
+
+The agent initially interpreted the StepStep reference as sufficient context
+to enter the support workflow, despite the actual request being for a
+general laptop recommendation.
+
+### Root cause
+
+The system prompt defined the agent's supported domain, but the boundary was
+not explicit enough about requests that mention StepStep while asking for an
+unrelated service or product.
+
+The existing knowledge-gap guard correctly escalated requests when relevant
+StepStep knowledge was unavailable. However, it could not distinguish between:
+
+1. A legitimate StepStep support request with missing knowledge.
+2. An unrelated request that happened to contain StepStep-related wording.
+
+This meant that an out-of-domain request could incorrectly enter the
+knowledge-retrieval and escalation workflow.
+
+### Decision
+
+Keep the domain boundary in the system prompt and explicitly instruct the
+agent that:
+
+- It only handles StepStep customer-support requests.
+- Out-of-domain requests must not invoke business tools.
+- Mentioning StepStep does not make an otherwise unrelated request
+  StepStep-related.
+- Out-of-domain requests should receive a clear capability-boundary response
+  rather than escalation.
+
+We deliberately did not introduce a separate classifier, additional LLM
+call, keyword-based routing layer, or another retrieval model.
+
+For the scope of this prototype, that would add complexity without enough
+evidence that the additional machinery was necessary.
+
+### Fix
+
+The system prompt was strengthened to explicitly define the supported domain
+and distinguish out-of-domain requests from in-domain knowledge gaps.
+
+The agent is now instructed to avoid tools when a request is unrelated to
+StepStep customer support.
+
+The existing knowledge-gap escalation behavior remains unchanged for
+legitimate StepStep requests.
+
+This preserves the following boundary:
+
+    StepStep request
+          |
+          +-- Knowledge available --> Answer
+          |
+          +-- Knowledge unavailable --> Escalate
+
+
+    Unrelated request
+          |
+          +-- Capability-boundary response
+              No business tools
+              No escalation
+
+### Regression testing
+
+A dedicated automated out-of-domain evaluation suite was added covering:
+
+- Weather
+- General programming
+- Travel
+- Financial advice
+- Unrelated product recommendations
+- An unrelated request containing the word "StepStep"
+
+The suite also records the agent event trace and asserts that out-of-domain
+requests produce no business tool calls.
+
+After the fix:
+
+**6/6 out-of-domain scenarios passed.**
+
+The final evaluation confirmed that all six scenarios returned explicit
+capability-boundary responses and made no tool calls. :contentReference[oaicite:0]{index=0} :contentReference[oaicite:1]{index=1}
+
+The evaluation results were also persisted to:
+
+`assessment/out_of_domain_results.json` :contentReference[oaicite:2]{index=2}
+
+### Why this matters
+
+The distinction between an out-of-domain request and a knowledge gap is an
+important safety boundary.
+
+An agent should not escalate every question it cannot answer. Escalation
+should represent a legitimate customer-support request that requires human
+assistance.
+
+For unrelated requests, the safer and more predictable behavior is to state
+the agent's capability boundary explicitly.
+
+### Alternatives rejected
+
+#### Separate intent classifier
+
+Rejected because it would introduce another model/component and another
+failure mode for a relatively small prototype.
+
+#### Keyword-based domain detection
+
+Rejected because domain membership cannot reliably be determined from the
+presence or absence of words such as `StepStep`.
+
+For example, a request can mention StepStep while still being unrelated to
+customer support.
+
+#### Escalating every unknown request
+
+Rejected because it conflates two different cases:
+
+- "This is a StepStep request, but we don't know how to safely handle it."
+- "This isn't a StepStep support request."
+
+The first should escalate; the second should stop at the capability boundary.
+
+### Evidence
+
+The final automated evaluation produced:
+
+```text
+All out-of-domain cases passed.
+Results saved to: assessment\out_of_domain_results.json
+```
+
+with zero business tool calls for all six scenarios.
+
+Result
+
+D015 establishes a clear separation between:
+
+Out-of-domain requests → capability-boundary response
+In-domain knowledge gaps → escalation
+
+The regression suite now protects this boundary against future changes.
+
 ---
 
 # Engineering Notes
@@ -891,3 +1069,7 @@ Initial retrieval tests passed for the core policy queries.
 
 The prototype is intentionally being developed incrementally so that
 each layer can be tested before becoming a dependency of the next layer.
+
+```
+
+```
