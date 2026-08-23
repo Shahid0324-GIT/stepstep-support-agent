@@ -1,18 +1,19 @@
 import os
-from contextlib import asynccontextmanager
 from pathlib import Path
 
 from dotenv import load_dotenv
-from fastapi import FastAPI, Request
+from fastapi import FastAPI
 from groq import Groq
 
 from app.agent.agent import SupportAgent
 from app.api.routes import get_agent, router
+from app.observability.logger import configure_logging
 from app.retrieval.knowledge import KnowledgeRetriever
 from app.tools.knowledge import KnowledgeTool
 
 
 load_dotenv()
+configure_logging()
 
 KNOWLEDGE_DIR = Path("data/knowledge")
 
@@ -46,25 +47,14 @@ def create_agent() -> SupportAgent:
     )
 
 
-@asynccontextmanager
-async def lifespan(app: FastAPI):
-    app.state.agent = create_agent()
-
-    yield
-
+agent = create_agent()
 
 app = FastAPI(
     title="StepStep Support Agent",
     version="0.1.0",
-    lifespan=lifespan,
 )
 
-
-def get_agent_from_state(request: Request) -> SupportAgent:
-    return request.app.state.agent
-
-
-app.dependency_overrides[get_agent] = get_agent_from_state
+app.dependency_overrides[get_agent] = lambda: agent
 
 app.include_router(
     router,
