@@ -1,8 +1,9 @@
 import os
+from contextlib import asynccontextmanager
 from pathlib import Path
 
 from dotenv import load_dotenv
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from groq import Groq
 
 from app.agent.agent import SupportAgent
@@ -45,14 +46,25 @@ def create_agent() -> SupportAgent:
     )
 
 
-agent = create_agent()
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    app.state.agent = create_agent()
+
+    yield
+
 
 app = FastAPI(
     title="StepStep Support Agent",
     version="0.1.0",
+    lifespan=lifespan,
 )
 
-app.dependency_overrides[get_agent] = lambda: agent
+
+def get_agent_from_state(request: Request) -> SupportAgent:
+    return request.app.state.agent
+
+
+app.dependency_overrides[get_agent] = get_agent_from_state
 
 app.include_router(
     router,
